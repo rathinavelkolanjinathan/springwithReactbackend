@@ -1,0 +1,178 @@
+server:
+  port: 8086
+  ssl:
+    enabled: false
+    key-store: classpath:keystore.p12
+    key-store-password: changeit
+    key-store-type: PKCS12
+    key-alias: tomcat
+
+spring:
+  application :
+    name: springreactbackend
+  datasource:
+    url: jdbc:mysql://localhost:3306/dbkms?createDatabaseIfNotExist=true
+    username: root
+    password: root
+    driver-class-name: com.mysql.jdbc.Driver
+  jpa:
+    show-sql: true
+    defer-datasource-initialization: true
+    database-platform: org.hibernate.dialect.MySQLDialect
+    hibernate:
+        ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+        highlight_sql: true
+        envers:
+          store_data_at_delete: true
+          global_with_modified_flag: true
+        jdbc:
+          time_zone: UTC
+    jackson:
+      serialization:
+        FAIL_ON_EMPTY_BEANS: false
+      time-zone: UTC
+
+eureka:
+  instance:
+    metadata-map:
+      secure: ${server.ssl.enabled:false}
+      zone: ${CURRENT_HOST_NAME:localhost}
+    hostname: ${CURRENT_HOST_NAME:localhost}
+    secure-port-enabled: ${server.ssl.enabled:false}
+    secure-port: ${server.port}
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: ${EUREKA_SERVER:http://localhost:8761/eureka/}
+    enabled: false
+    healthcheck:
+      enabled: true
+
+logging:
+  level:
+    org.hibernate.orm.jdbc.bind: trace
+    org.hibernate.orm.jdbc.extract : trace
+
+management:
+    endpoints:
+        web:
+        exposure:
+            include: health,info,prometheus
+    endpoint:
+        health:
+        show-details: always
+
+swagger:
+  server:
+    base-url: http://localhost:8080/
+
+---
+
+spring:
+  config :
+    activate:
+      on-profile: dev
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/dbkms?createDatabaseIfNotExist=true
+    username: root
+    password: root
+    driver-class-name: com.mysql.jdbc.Driver
+
+
+eureka:
+  client:
+      enabled: true
+
+server:
+  ssl:
+    enabled: false
+    ciphers:
+      -TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+      -TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+    enabled-protocols:
+      -TLSv1.2
+      -TLSv1.3
+    key-store: classpath:dev-keystore.p12
+    custom-key-store-password: classpath:custom-dev-keystore.p12
+    trust-store: classpath:dev-truststore.p12
+    custom-trust-store-password: classpath:custom-dev-truststore.p12
+
+swagger:
+  server:
+    base-url: http://localhost:8080/
+
+---
+
+spring:
+  config :
+    activate:
+      on-profile: uat
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/dbkms?createDatabaseIfNotExist=true
+    username: root
+    password: root
+    driver-class-name: com.mysql.jdbc.Driver
+
+
+eureka:
+  client:
+    enabled: true
+
+server:
+  ssl:
+    enabled: false
+    ciphers:
+      -TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+      -TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+    enabled-protocols:
+      -TLSv1.2
+      -TLSv1.3
+    key-store: classpath:uat-keystore.p12
+    custom-key-store-password: classpath:custom-uat-keystore.p12
+    trust-store: classpath:dev-truststore.p12
+    custom-trust-store-password: classpath:custom-uat-truststore.p12
+
+swagger:
+  server:
+    base-url: http://localhost:8080/
+
+---
+
+spring:
+  config :
+    activate:
+      on-profile: prod
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/dbkms?createDatabaseIfNotExist=true
+    username: root
+    password: root
+    driver-class-name: com.mysql.jdbc.Driver
+
+eureka:
+  client:
+    enabled: true
+
+server:
+  ssl:
+    enabled: false
+    ciphers:
+      -TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+      -TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+    enabled-protocols:
+      -TLSv1.2
+      -TLSv1.3
+    key-store: classpath:uat-keystore.p12
+    custom-key-store-password: classpath:custom-uat-keystore.p12
+    trust-store: classpath:dev-truststore.p12
+    custom-trust-store-password: classpath:custom-uat-truststore.p12
+
+swagger:
+  server:
+    base-url: http://localhost:8080/
