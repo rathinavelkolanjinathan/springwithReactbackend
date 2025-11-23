@@ -5,12 +5,12 @@ import lombok.*;
 @Setter
 @Getter
 @ToString
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class LoginDTO {
-    private String email;
-    private String password;
+//@Builder
+public class LoginResponse {
+    private String message;
+    private boolean isStatus;
 
 
 }

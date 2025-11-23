@@ -1,11 +1,11 @@
 package com.react.service;
 
-import com.react.dto.EmployeeDTO;
-import com.react.dto.LoginDTO;
-import com.react.responseload.LoginResponse;
+import com.react.entity.Employee;
+
+import java.util.List;
 
 
 public interface EmployeeService {
-    String addEmployee(EmployeeDTO employeeDTO);
-    LoginResponse loginEmployee(LoginDTO loginDTO);
+    Employee createEmployee(Employee employee);
+    List<Employee> getEmployee(Employee loginDTO);
 }
